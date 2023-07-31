@@ -3,4 +3,9 @@ class ProductsController < ApplicationController
     @products = Product.all
     render template: "products/index"
   end
+
+  def football
+    @product = Product.find_by(name: "Football")
+    render template: "products/show"
+  end
 end
