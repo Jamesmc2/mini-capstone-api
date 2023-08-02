@@ -22,10 +22,10 @@ class ProductsController < ApplicationController
 
   def update
     @product = Product.find_by(id: params[:id])
-    @product.price = params[:price]
-    @product.name = params[:name]
-    @product.image_url = params[:image_url]
-    @product.description = params[:description]
+    @product.price = params[:price] || @product.price
+    @product.name = params[:name] || @product.name
+    @product.image_url = params[:image_url] || @product.image_url
+    @product.description = params[:description] || @product.description
     @product.save
     render :show
   end
