@@ -26,6 +26,7 @@ class ProductsController < ApplicationController
     @product.name = params[:name] || @product.name
     @product.image_url = params[:image_url] || @product.image_url
     @product.description = params[:description] || @product.description
+    @product.inventory_count = params[:inventory_count] || @product.inventory_count
     @product.save
     render :show
   end
