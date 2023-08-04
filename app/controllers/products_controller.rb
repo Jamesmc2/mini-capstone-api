@@ -17,7 +17,11 @@ class ProductsController < ApplicationController
       description: params[:description],
     )
     @product.save
-    render template: "products/show"
+    if @product.errors.full_messages == []
+      render template: "products/show"
+    else
+      render json: @product.errors.full_messages
+    end
   end
 
   def update
@@ -28,7 +32,11 @@ class ProductsController < ApplicationController
     @product.description = params[:description] || @product.description
     @product.inventory_count = params[:inventory_count] || @product.inventory_count
     @product.save
-    render :show
+    if @product.errors.full_messages == []
+      render template: "products/show"
+    else
+      render json: @product.errors.full_messages
+    end
   end
 
   def delete
