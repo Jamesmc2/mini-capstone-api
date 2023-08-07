@@ -3,6 +3,7 @@ json.name product.name
 json.price product.price
 json.tax product.tax
 json.total product.total
-json.image_url product.image_url
+json.images product.images
 json.description product.description
 json.inventory_count product.inventory_count
+json.supplier product.supplier
