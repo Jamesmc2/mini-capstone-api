@@ -1,7 +1,9 @@
 class OrdersController < ApplicationController
+  before_action :authenticate_user
+
   def show
     @order = Order.find_by(id: params[:id])
-    if current_user && current_user.id == @order.user_id
+    if current_user.id == @order.user_id
       render :show
     else
       render json: { error: "You must be logged into the user who made this order to view it" }
