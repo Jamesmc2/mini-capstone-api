@@ -16,20 +16,34 @@ class OrdersController < ApplicationController
   end
 
   def create
-    product = Product.find_by(id: params[:product_id])
-    @order = Order.new(
-      user_id: current_user.id,
-      product_id: params[:product_id],
-      quantity: params[:quantity],
-      subtotal: (product.price * params[:quantity].to_i),
-      tax: (product.price * params[:quantity].to_i * 0.09),
-      total: (product.price * params[:quantity].to_i) + (product.price * params[:quantity].to_i * 0.09),
-    )
-    @order.save
-    if @order.save
-      render :show
+    subtotal = 0
+    if current_user
+      current_user.carted_products.each do |carted_product|
+        if carted_product.status == "carted"
+          subtotal += (carted_product.product.price * carted_product.quantity)
+        end
+      end
+      order = Order.new(
+        user_id: current_user.id,
+        subtotal: subtotal,
+        tax: subtotal * 0.09,
+        total: subtotal + (subtotal * 0.09),
+      )
+      order.save
+      current_user.carted_products.each do |carted_product|
+        if carted_product.status == "carted"
+          carted_product.status = "purchased"
+          carted_product.order_id = order.id
+          carted_product.save
+        end
+      end
+      if order.save
+        render json: { message: "your order was made" }
+      else
+        render json: { error: order.errors.full_messages }
+      end
     else
-      render json: { error: "order not made" }
+      render json: { error: "you are not logged in" }
     end
   end
 end

@@ -1,6 +1,5 @@
 class Order < ApplicationRecord
   belongs_to :user
-  belongs_to :product
 end
 
 #create a new controller for orders
